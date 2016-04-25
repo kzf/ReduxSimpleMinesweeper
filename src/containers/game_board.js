@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { incrementScore } from '../actions/increment_score';
 import { bindActionCreators} from 'redux';
+import GameBoardRow from './game_board_row';
 
 class GameBoard extends Component {
   constructor(props) {
@@ -12,23 +13,12 @@ class GameBoard extends Component {
   }
 
   render() {
+    const rows = this.props.board.map((row) => (
+      <GameBoardRow row={row} />
+    ))
     return (
       <div className="game-board">
-        <div className="board-row">
-          <div className="board-square"></div>
-          <div className="board-square"></div>
-          <div className="board-square"></div>
-        </div>
-        <div className="board-row">
-          <div className="board-square"></div>
-          <div className="board-square"></div>
-          <div className="board-square"></div>
-        </div>
-        <div className="board-row">
-          <div className="board-square"></div>
-          <div className="board-square"></div>
-          <div className="board-square"></div>
-        </div>
+        {rows}
       </div>
     );
   }
