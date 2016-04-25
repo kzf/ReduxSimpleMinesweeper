@@ -8,15 +8,27 @@ class GameBoard extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props);
     this.incrementScore = props.incrementScore.bind(this);
   }
 
   render() {
     return (
-      <div>
-        Gam eBoard Goes here. Score:
-        <span onClick={this.incrementScore}>{this.props.score}</span>
+      <div className="game-board">
+        <div className="board-row">
+          <div className="board-square"></div>
+          <div className="board-square"></div>
+          <div className="board-square"></div>
+        </div>
+        <div className="board-row">
+          <div className="board-square"></div>
+          <div className="board-square"></div>
+          <div className="board-square"></div>
+        </div>
+        <div className="board-row">
+          <div className="board-square"></div>
+          <div className="board-square"></div>
+          <div className="board-square"></div>
+        </div>
       </div>
     );
   }
@@ -24,7 +36,8 @@ class GameBoard extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    score: state.score
+    score: state.score,
+    board: state.board
   }
 }
 

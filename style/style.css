@@ -1,0 +1,43 @@
+.game-board {
+}
+
+.game-board .board-row {
+  display: block;
+}
+
+.game-board .board-row .board-square {
+  border: 1px solid black;
+  border-bottom-width: 0;
+  border-right-width: 0;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+  background-color: #999;
+}
+
+.game-board .board-row .board-square.uncovered {
+  background-color: #eee;
+  cursor: default;
+}
+
+.game-board .board-row .board-square:last-child {
+  border-right-width: 1px;
+}
+.game-board .board-row:last-child .board-square {
+  border-bottom-width: 1px;
+}
+
+.game-board .board-row:first-child .board-square:first-child {
+  border-top-left-radius: 3px;
+}
+.game-board .board-row:first-child .board-square:last-child {
+  border-top-right-radius: 3px;
+}
+.game-board .board-row:last-child .board-square:first-child {
+  border-bottom-left-radius: 3px;
+}
+.game-board .board-row:last-child .board-square:last-child {
+  border-bottom-right-radius: 3px;
+}
