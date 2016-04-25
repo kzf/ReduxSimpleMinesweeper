@@ -7,8 +7,6 @@
 
 .game-board .board-row .board-square {
   border: 1px solid black;
-  border-bottom-width: 0;
-  border-right-width: 0;
   width: 20px;
   height: 20px;
   display: inline-block;
@@ -24,11 +22,17 @@
   cursor: default;
 }
 
-.game-board .board-row .board-square:last-child {
-  border-right-width: 1px;
+.game-board .board-row:first-child .board-square {
+  border-top-width: 2px;
 }
 .game-board .board-row:last-child .board-square {
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
+}
+.game-board .board-row .board-square:first-child {
+  border-left-width: 2px;
+}
+.game-board .board-row .board-square:last-child {
+  border-right-width: 2px;
 }
 
 .game-board .board-row:first-child .board-square:first-child {
