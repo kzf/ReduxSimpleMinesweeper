@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import GameBoard from './game_board';
+import GameBoard from '../containers/game_board';
 
 export default class App extends Component {
   render() {
