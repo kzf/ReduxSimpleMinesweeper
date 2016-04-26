@@ -15,11 +15,14 @@
   background-color: #999;
   user-select: none;
   -webkit-user-select: none;
+  text-align: center;
+  line-height: 20px;
 }
 
 .game-board .board-row .board-square.uncovered {
   background-color: #eee;
   cursor: default;
+  border-color: #aaa;
 }
 
 .game-board .board-row:first-child .board-square {

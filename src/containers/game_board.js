@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { incrementScore } from '../actions/increment_score';
 import { incrementSquare } from '../actions/increment_square';
+import { newGame } from '../actions/new_game';
 import { bindActionCreators} from 'redux';
 import GameBoardRow from './game_board_row';
 
@@ -12,6 +13,7 @@ class GameBoard extends Component {
 
     this.incrementScore = props.incrementScore.bind(this);
     this.incrementSquare = props.incrementSquare.bind(this);
+    this.newGame = props.newGame.bind(this);
   }
 
   render() {
@@ -21,6 +23,7 @@ class GameBoard extends Component {
     return (
       <div className="game-board">
         {rows}
+        <div onClick={() => this.newGame(10, 10)}>New Game</div>
       </div>
     );
   }
@@ -36,7 +39,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     incrementScore,
-    incrementSquare
+    incrementSquare,
+    newGame
   }, dispatch);
 }
 
