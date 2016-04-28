@@ -1,126 +1,86 @@
-var cellSize = 20;
-
-var H = 12;
-var W = 12;
-var gameOver = false;
-
-function haveIWon() {
-  for (var i = 0; i < W; i++) {
-    for (var j = 0; j < W; j++) {
-      if (!cells[i][j].revealed && !cells[i][j].hasBomb) return false;
-    }
-  }
-  return true;
-}
-
-function showBombs() {
-  for (var i = 0; i < W; i++) {
-    for (var j = 0; j < W; j++) {
-      var cell = cells[i][j];
-      if (cell.hasBomb) {
-        cell.$cell.addClass('bomb');
-      }
-    }
-  }
-}
-
-function handleEndGame() {
-  if (haveIWon()) {
-    setGameOver();
-  }
-}
-
-function setGameOver() {
-  gameOver = true;
-  $board.addClass('gameOver');
-  showBombs();
-}
-
-function createCell() {
-  var c = $("<div>").html('&nbsp;').addClass('cell');
-  return c;
-}
-
-function bombIndicator(i,j) {
-  if (i < 0 || i >= H) return 0;
-  if (j < 0 || j >= W) return 0;
-  return cells[i][j].hasBomb ? 1 : 0;
-}
-function getNumber(i,j) {
-  var sum = 0;
-  for (var x = -1; x <= 1; x++) {
-    for (var y = -1; y <= 1; y++) {
-      if (x != 0 || y != 0) {
-        sum += bombIndicator(i+x,j+y);
-      }
-    }
-  }
-  return sum;
-}
-
-function revealCell(i,j) {
-  if (i < 0 || i >= H) return;
-  if (j < 0 || j >= W) return;
-  var cell = cells[i][j];
-  if (cell.revealed || cell.hasBomb) return;
-  cell.revealed = true;
-  cell.$cell.addClass('clear');
-  if (cell.number != 0) {
-    cell.$cell.text(cell.number);
-  } else {
-    revealCell(i-1, j);
-    revealCell(i-1, j-1);
-    revealCell(i+1, j);
-    revealCell(i+1, j+1);
-    revealCell(i, j-1);
-    revealCell(i+1, j-1);
-    revealCell(i, j+1);
-    revealCell(i-1, j+1);
-  }
-}
-
-function handleCellClick(i, j) {
-  return function(e) {
-    if (gameOver) return;
-    var cell = cells[i][j];
-    if (!cell) return;
-    if (cell.hasBomb) {
-      setGameOver();
-    } else if (!cell.revealed) {
-      revealCell(i,j);
-      handleEndGame();
+class GameBoard {
+  constructor(i, j) {
+    // If i,j are both defined they must be both integers (width and height)
+    // otherwise the single argument will be a GameBoard to clone
+    if (j) {
+      this.board = Array(j).fill().map(() => {
+        return Array(i).fill().map(() => {
+          return {
+            covered: true,
+            bomb:    (Math.random() < 0.05)
+          }
+        });
+      });
+      this.width = i;
+      this.height = j;
+      this.calculateNearby();
+    } else {
+      this.width = i.width;
+      this.height = i.height
+      this.board = i.board;
     }
   };
-}
 
-var $board = $('.board');
-$board.css('width', W*cellSize);
+  rows() {
+    return this.board;
+  };
 
-var cells = []
-var cell;
-for (var i = 0; i < W; i++) {
-  cells[i] = [];
-  for (var j = 0; j < W; j++) {
-    cell = createCell();
-    $board.append(cell);
-    cell.click(handleCellClick(i,j));
-    cells[i].push({
-      $cell: cell,
-      hasBomb: (Math.random() < 0.1),
-    });
-  }
-}
+  uncover(x, y) {
+    let newBoard = new GameBoard(this);
+    // newBoard.board = newBoard.board.map((row, i) => {
+    //   if (y != i) return row;
+    //   return row.map((square, j) => {
+    //     if (x != j) return square;
+    //     return Object.assign({}, square, { covered: false });
+    //   });
+    // });
+    // return newBoard;
+    newBoard.revealCell(x, y);
+    return newBoard;
+  };
 
-for (var i = 0; i < W; i++) {
-  for (var j = 0; j < W; j++) {
-    cells[i][j].number = getNumber(i,j);
-  }
-}
+  calculateNearby() {
+    var sum, i, j, x, y;
+    for (j = 0; j < this.width; j++) {
+      for (i = 0; i < this.width; i++) {
+        sum = 0;
+        for (x = -1; x <= 1; x++) {
+          for (y = -1; y <= 1; y++) {
+            if (x != 0 || y != 0) {
+              sum += this.bombIndicator(i+x,j+y);
+            }
+          }
+        }
+        this.board[i][j].nearby = sum;
+      }
+    }
+  };
 
+  bombIndicator(x, y) {
+    if (x < 0 || x >= this.width) return 0;
+    if (y < 0 || y >= this.height) return 0;
+    if (this.board[y][x].bomb) return 1;
+    return 0;
+  };
 
+  revealCell(i, j) {
+    if (i < 0 || i >= this.width) return;
+    if (j < 0 || j >= this.height) return;
+    var cell = this.board[j][i];
+    if (!cell.covered || cell.bomb) return;
+    this.board[j][i] = Object.assign({}, cell, { covered: false });;
+    if (cell.nearby == 0) {
+      this.revealCell(i-1, j);
+      this.revealCell(i-1, j-1);
+      this.revealCell(i+1, j);
+      this.revealCell(i+1, j+1);
+      this.revealCell(i, j-1);
+      this.revealCell(i+1, j-1);
+      this.revealCell(i, j+1);
+      this.revealCell(i-1, j+1);
+    }
+  };
 
+};
 
-
-
-
-  
+export default GameBoard;

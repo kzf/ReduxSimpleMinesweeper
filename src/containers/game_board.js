@@ -17,7 +17,7 @@ class GameBoard extends Component {
   }
 
   render() {
-    const rows = this.props.board.map((row, i) => (
+    const rows = this.props.board.rows().map((row, i) => (
       <GameBoardRow key={i} row={row} incrementSquare={this.incrementSquare} i={i} />
     ))
     return (

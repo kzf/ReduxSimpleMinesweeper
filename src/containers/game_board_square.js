@@ -15,12 +15,18 @@ class GameBoardSquare extends Component {
   render() {
     const squareClasses = classNames({
       'board-square': true,
-      'uncovered': !this.props.square.covered
+      'uncovered': !this.props.square.covered,
     });
 
+    let contents = '';
+    if (!this.props.square.covered) {
+      contents = this.props.square.nearby;
+    }
+
     return (
-      <div className={squareClasses} onClick={() => this.props.incrementSquare(this.props.i, this.props.j)}>
-        {this.props.square.covered}
+      <div className={squareClasses}
+           onClick={() => this.props.incrementSquare(this.props.j, this.props.i)}>
+        {contents}
       </div>
     );
   }
