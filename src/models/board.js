@@ -59,7 +59,7 @@ class GameBoard {
   bombIndicator(x, y) {
     if (x < 0 || x >= this.width) return 0;
     if (y < 0 || y >= this.height) return 0;
-    if (this.board[y][x].bomb) return 1;
+    if (this.board[x][y].bomb) return 1;
     return 0;
   };
 
